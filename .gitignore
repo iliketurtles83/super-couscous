@@ -1,2 +1,4 @@
 *.csv
 *.mp3
+*.pkl
+*.pyc

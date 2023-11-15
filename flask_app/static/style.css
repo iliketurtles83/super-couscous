@@ -1,0 +1,11 @@
+body { 
+    background: #e8f1f9; 
+}
+
+table {
+    width: 100%;
+}
+
+.collapse-row {
+    width: 100%; /* set the width to match the table columns */
+}
