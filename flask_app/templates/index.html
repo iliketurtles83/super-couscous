@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Game Recommendations</title>
+  <title>Song Recommender</title>
 
   {{ bootstrap.load_css() }}
   {% block styles %}
@@ -15,13 +15,14 @@
 
 <div class="container">
   <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-    <h2 class="pt-5 pb-2">Video Game Recommendations</h2>
+    <h2 class="pt-5 pb-2">Song Recommender</h2>
     <br><br>
     <div class="form">
       <form action="{{ url_for('.index') }}" method="POST">
         {{ form.csrf_token }}
         <div class="mb-3">
-          {{ form.name(class="form-control", placeholder="Enter a game name", value='') }}
+          {{ form.artist(class="form-control", placeholder="Artist", value='') }}
+          {{ form.name(class="form-control", placeholder="Song Title", value='') }}
         </div>
         {{ form.submit(class="btn btn-primary") }}
 
@@ -34,49 +35,15 @@
     {% endif %}
   <br><br>
 
-    {% if similar_games %}
-      <h4 class="pt-3 pb-2">Games similar to {{ game }}</h4>
+    {% if similar_songs %}
+      <h4 class="pt-3 pb-2">Songs similar to {{artist}} - {{name}}</h4>
       <table class="table table-borderless align-middle">
-        <caption class="visually-hidden">Similar Games</caption>
-        <colgroup>
-          <col span="1" style="width: 65%;">
-          <col span="1" style="width: 20%;">
-          <col span="1" style="width: 15%;">
-        </colgroup>
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">Game</th>
-            <th scope="col">Similarity</th>
-            <th scope="col">Info</th>
-          </tr>
-        </thead>
+        <caption class="visually-hidden">Similar Songs</caption>
         <tbody>
-        {% for game in similar_games %}
+        {% for song in similar_songs %}
           <tr>
-            <td>
-              <form action="{{ url_for('.index') }}" method="POST">
-                <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"> 
-                <input type="hidden" name="name" value="{{ game['title'] }}">
-                <button type="submit" class="btn btn-link p-0">{{ game['title'] }}</button>
-              </form>
-            </td>
-            <td>
-                {{ game['score'] }}
-            </td>
-            <td>
-              <button class="collapse-btn btn btn-primary">Expand</button>
-            </td>
+            <td>{{ song }}</td>
           </tr>
-          <tr class="collapse-row">
-            <td colspan="3">
-              <div class="card card-body">
-                <p><b>Genres:</b> {{ game['genres'] }}<br></p>
-                <p><b>Categories:</b> {{ game['categories'] }}<br></p>
-                <p><b>Description:</b> {{ game['description'] }}</p>     
-              </div>
-            </td>
-          </tr>
-
         {% endfor %}
       </tbody>
       </table>
@@ -85,14 +52,6 @@
 </div>
 {% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script>
-  $(document).ready(function() {
-      $('.collapse-row').hide(); // hide all collapse rows by default
-      $('.collapse-btn').click(function() {
-          $(this).closest('tr').next('.collapse-row').toggle(); // toggle the collapse row below the current row
-      });
-  });
-</script>  
 {% endblock %}
 {% endblock %}
 </body>

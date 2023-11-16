@@ -1,4 +1,4 @@
-''' Flask app that takes in a game title and returns the top 10 similar games '''
+''' Flask app that takes in a artist and song and returns the top 10 similar songs. '''
 
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap5
@@ -19,24 +19,26 @@ Bootstrap5(app)
 
 
 class NameForm(FlaskForm):
-    name = StringField('Enter game name: ', validators=[DataRequired()])
+    artist = StringField('Enter artist name: ', validators=[DataRequired()])
+    name = StringField('Enter song name: ', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 # route for home page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     ''' 
-    Displays a form to enter a game title.
+    Displays a form to enter a song.
     Displays results if form is submitted.
     '''
     form = NameForm()
     if form.validate_on_submit():
-        title = form.name.data
-        similar_games = recommend_content(title)
-        if similar_games:
-            return render_template('index.html', form=form, game=title, similar_games=similar_games)
+        artist = form.artist.data
+        name = form.name.data
+        similar_songs = recommend_content(artist, name)
+        if similar_songs:
+            return render_template('index.html', form=form, artist=artist, name=name, similar_songs=similar_songs)
         else:
-            message = "That game is not in our database."
+            message = "That song is not in our database."
             return render_template('index.html', form=form, message=message)
     return render_template('index.html', form=form)
 
