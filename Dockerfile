@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN apt-get update && \
     apt-get install -y gcc
-
+    
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -15,7 +15,7 @@ RUN pip install -r requirements.txt
 
 
 COPY ./flask_app /app
-COPY ./song_model.pkl /app/utils/song_model.pkl
-COPY ./Music_Info.csv /app/utils/Music_Info.csv
+COPY ./weighted_sim.pkl /app/utils/weighted_sim.pkl
+COPY ./titles.pkl /app/utils/titles.pkl
 
 CMD ["python", "app.py"]
